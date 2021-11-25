@@ -12,7 +12,7 @@ class model{
 
     private $db;
 
-    function __construct()
+    public function __construct()
     {
         try {
             $this->db =
@@ -20,7 +20,7 @@ class model{
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         catch (PDOException $exception) {
-            echo $exception -> getMessage();
+            echo $exception->getMessage();
             die;
         }
     }
@@ -32,24 +32,24 @@ class model{
         $password_hash = password_hash($password, PASSWORD_BCRYPT);
 
             try {
-                $statement = $this -> db -> prepare($sql);
-                $statement -> bindParam(":login", $login);
-                $statement -> bindParam(":password", $password_hash);
+                $statement = $this->db->prepare($sql);
+                $statement->bindParam(":login", $login);
+                $statement->bindParam(":password", $password_hash);
 
-                return $statement -> execute();
+                return $statement->execute();
 
             } catch (PDOException $ex) {
-                echo $ex -> getMessage();
+                echo $ex->getMessage();
                 die;
             }
     }
 
     function userCheck($login) {
         $sql = "SELECT * FROM users WHERE login = :login";
-        $statement = $this -> db -> prepare($sql);
-        $statement -> bindParam(":login", $login);
-        $statement -> execute();
-        $result = $statement -> fetch(PDO::FETCH_ASSOC);
+        $statement = $this->db->prepare($sql);
+        $statement->bindParam(":login", $login);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         if (isset($result['id'])) {
             return true;
@@ -60,10 +60,10 @@ class model{
 
     function loginUser($login, $password) {
         $sql = "SELECT * FROM users WHERE login = :login";
-        $statement = $this -> db -> prepare($sql);
-        $statement -> bindParam(":login", $login);
-        $statement -> execute();
-        $result = $statement -> fetch(PDO::FETCH_ASSOC);
+        $statement = $this->db->prepare($sql);
+        $statement->bindParam(":login", $login);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         if (password_verify($password, $result["password"])) {
             return $result;
@@ -74,11 +74,11 @@ class model{
 
     function getTasks($id) {
         $sql = "SELECT * FROM tasks WHERE user_id = :id";
-        $statement = $this -> db ->prepare($sql);
-        $statement -> bindParam(":id", $id);
-        $statement -> execute();
+        $statement = $this->db->prepare($sql);
+        $statement->bindParam(":id", $id);
+        $statement->execute();
 
-        $posts = $statement -> fetchAll();
+        $posts = $statement->fetchAll();
         $arrayTask = array();
 
         foreach ($posts as $row) {
@@ -94,9 +94,9 @@ class model{
             VALUES (:user_id, :description)";
 
         try {
-            $statement = $this -> db -> prepare($sql);
-            $statement -> bindParam(":user_id", $user_id);
-            $statement -> bindParam(":description", $description);
+            $statement = $this->db->prepare($sql);
+            $statement->bindParam(":user_id", $user_id);
+            $statement->bindParam(":description", $description);
 
             return $statement -> execute();
 
@@ -108,19 +108,19 @@ class model{
 
     function removeTask($task_id) {
         $sql = "DELETE FROM tasks WHERE id = $task_id";
-        $statement = $this -> db -> prepare($sql);
+        $statement = $this->db->prepare($sql);
         return $statement -> execute();
     }
 
     function removeAllTasks($user_id) {
         $sql = "DELETE FROM tasks WHERE user_id = $user_id";
-        $statement = $this -> db -> prepare($sql);
+        $statement = $this->db->prepare($sql);
         return $statement -> execute();
     }
 
     function alterTaskStatus($task_id) {
         $taskSql = "SELECT * FROM tasks WHERE id = $task_id";
-        $statement = $this -> db -> prepare($taskSql);
+        $statement = $this->db->prepare($taskSql);
         $statement -> execute();
         $task = $statement -> fetch(PDO::FETCH_ASSOC);
 
@@ -131,13 +131,13 @@ class model{
         }
 
         $sql = "UPDATE tasks SET status = $new_status WHERE id = $task_id";
-        $statement = $this -> db -> prepare($sql);
+        $statement = $this->db->prepare($sql);
         return $statement -> execute();
     }
 
     function alterTasksStatus($user_id, $status) {
         $sql = "UPDATE tasks SET status = :status WHERE user_id = :user_id";
-        $statement = $this -> db -> prepare($sql);
+        $statement = $this->db->prepare($sql);
         $statement -> bindParam(":status", $status);
         $statement -> bindParam(":user_id", $user_id);
         return $statement -> execute();

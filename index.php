@@ -1,37 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        form {
-            position: fixed;
-            padding: 10px;
-            color: #fff;
-            border: 4px solid black;
-            left: 40%; top: 10%;
-            width: 200px;
-            height: 100px;
-            margin: -50px 0 0 -100px;
-        }
-        input {
-            margin-bottom: 10px;
-        }
-
-        a {
-            left: 50%; top: 30%;
-        }
-    </style>
-</head>
-<body>
-        <form align="center" action="" method="POST">
-            <input type="text" placeholder="login" name="login" required> <br>
-            <input type="text" placeholder="Password" name="password" required> <br>
-            <input type="submit" name="send" value="Login"> <br>
-        </form>
-</body>
-</html>
-
 <?php
 
 function autoload($c) {
@@ -45,12 +11,10 @@ function autoload($c) {
 
 spl_autoload_register('autoload');
 
-$connect = new model("localhost","tasklist",
-    "root", "");
-
 if (isset($_POST['send'])) {
     if (isset($_POST['login']) && isset($_POST["password"])) {
 
+        $connect = new model();
         $login = htmlspecialchars($_POST['login']);
         $password = htmlspecialchars($_POST['password']);
 
@@ -82,5 +46,4 @@ if (isset($_POST['send'])) {
     }
 }
 
-?>
-
+require_once 'Views/auth.form.html';
