@@ -1,4 +1,3 @@
-
 <?php
 
 if (!is_null($tasks)) {
@@ -13,7 +12,6 @@ if (!is_null($tasks)) {
         } else {
             $status = "READY";
         }
-
 
         echo htmlspecialchars($task -> description);
 
