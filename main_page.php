@@ -13,20 +13,6 @@ function autoload($c) {
     }
 }
 
-$class = 'main'
+$main = new main();
 
-class main extends ACore {
-
-    public function __construct()
-    {
-        $this->get_content();
-    }
-
-    public function get_content() {
-        $result = $this -> get_body();
-        return $result;
-    }
-}
-?>
-
-
+$main -> get_body();
