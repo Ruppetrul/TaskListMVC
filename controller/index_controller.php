@@ -22,7 +22,7 @@ class index_controller
                         session_start();
                         $_SESSION['id'] = $isLogin['id'];
                         $_SESSION['login'] = $isLogin['login'];
-                        header("Location: main_page.php");
+                        header("Location: main.php");
                     } else {
                         $_POST['error'] = "Wrong login or password";
                     }
@@ -34,7 +34,7 @@ class index_controller
                         session_start();
                         $_SESSION['id'] = $isLogin['id'];
                         $_SESSION['login'] = $isLogin['login'];
-                        header("Location: main_page.php");
+                        header("Location: main.php");
                     } else {}
                 }
             }

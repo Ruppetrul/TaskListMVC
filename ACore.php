@@ -15,7 +15,10 @@ abstract class ACore {
     public function get_body() {
         $tasks = $this->m->getTasks($_SESSION['id']);
         include "tpl/main_tpl.php";
+    }
 
+    public function get_index_body() {
+        include "tpl/index_tpl.php";
     }
 
     abstract function get_content();

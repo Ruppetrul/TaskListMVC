@@ -11,6 +11,19 @@ function autoload($c) {
 
 spl_autoload_register('autoload');
 
-new index_controller;
+require_once "ACore.php";
 
-require_once 'Views/auth.form.html';
+class index extends ACore {
+    public function get_content() {
+        $this -> get_index_body();
+        new index_controller();
+    }
+}
+
+if (isset($_GET['error'])) {}
+else {
+    $main = new index;
+    $main -> get_content();
+}
+
+new index_controller;
