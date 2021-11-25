@@ -2,16 +2,6 @@
 
 session_start();
 
-require_once "ACore.php";
-
-class main extends ACore {
-    public function get_content() {
-        $this -> get_body($this -> m);
-        $connect = $this->m;
-        new main_controller($connect);
-    }
-}
-
 if (isset($_SESSION['id'])|| isset($_SESSION['login'])){
     function autoload($c) {
         if (file_exists("controller/".$c.".php")) {
@@ -23,10 +13,31 @@ if (isset($_SESSION['id'])|| isset($_SESSION['login'])){
     }
     spl_autoload_register('autoload');
 
+    $controller = new main_controller;
+
+    if(isset($_POST['delete'])){
+        $controller -> removeTask(htmlspecialchars($_POST['delete']));
+        header("Refresh:0");
+    } else if(isset($_POST['change_status'])) {
+        $controller -> alterTaskStatus(htmlspecialchars($_POST['change_status']));
+        header("Refresh:0");
+    } else if(isset($_POST['add_task'])){
+        $controller -> addTask(htmlspecialchars($_SESSION['id']), htmlspecialchars($_POST['new_task']));
+        header("Refresh:0");
+    } else if (isset($_POST['REMOVE_ALL'])) {
+        $controller -> removeAllTasks(htmlspecialchars($_SESSION['id']));
+        header("Refresh:0");
+    } else if(isset($_POST['READY_ALL'])) {
+        $controller -> alterTasksStatus(htmlspecialchars($_SESSION['id']), true);
+        header("Refresh:0");
+    } else if(isset($_POST['EXIT'])) {
+        session_destroy();
+        header("Location: index.php");
+    }
+
     if (isset($_GET['error'])) {}
     else {
-        $main = new main;
-        $main -> get_content();
+        $controller -> get_content();
     }
 
 } else {

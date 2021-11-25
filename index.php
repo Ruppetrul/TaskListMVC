@@ -11,19 +11,44 @@ function autoload($c) {
 
 spl_autoload_register('autoload');
 
-require_once "ACore.php";
+$controller = new index_controller;
 
-class index extends ACore {
-    public function get_content() {
-        $this -> get_index_body();
-        new index_controller();
+if (isset($_POST['send'])) {
+
+    if (isset($_POST['login']) && isset($_POST["password"])) {
+
+        $login = htmlspecialchars($_POST['login']);
+        $password = htmlspecialchars($_POST['password']);
+
+        $isUser = $controller->userCheck($login);
+
+        if ($isUser) {
+
+            $isLogin = $controller->login($login, $password);
+
+            if (isset($isLogin['id'])) {
+                session_start();
+                $_SESSION['id'] = $isLogin['id'];
+                $_SESSION['login'] = $isLogin['login'];
+                header("Location: main.php");
+            } else {
+                $_POST['error'] = "Wrong login or password";
+            }
+        } else {
+            $controller->register($login, $password);
+            $isLogin = $controller->login($login, $password);
+
+            if (isset($isLogin['id'])) {
+                session_start();
+                $_SESSION['id'] = $isLogin['id'];
+                $_SESSION['login'] = $isLogin['login'];
+                header("Location: main.php");
+            } else {}
+        }
     }
 }
 
 if (isset($_GET['error'])) {}
 else {
-    $main = new index;
-    $main -> get_content();
+    $controller -> get_content();
 }
-
-new index_controller;
