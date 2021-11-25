@@ -2,14 +2,21 @@
 
 require('Task.php');
 
-class connect{
+define('DB_HOST', 'localhost');
+define('DB_USER', 'myTestUser');
+define('DB_PASSWORD', '1234');
+define('DB_NAME', 'tasklist');
+define('DB_TABLE_VERSIONS', 'versions');
+
+class model{
+
     private $db;
 
-    function __construct($host, $dbname, $username, $password)
+    function __construct()
     {
         try {
             $this->db =
-                new PDO('mysql:host=' . $host . ';dbname=' . $dbname, $username, $password);
+                new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         catch (PDOException $exception) {
@@ -135,5 +142,4 @@ class connect{
         $statement -> bindParam(":user_id", $user_id);
         return $statement -> execute();
     }
-
 }

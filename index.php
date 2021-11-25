@@ -34,10 +34,18 @@
 
 <?php
 
-require "connect.php";
-require "migrations/migration.php";
+function autoload($c) {
+    if (file_exists("controller/".$c.".php")) {
+        require_once "controller/".$c.".php";
+    }
+    elseif (file_exists("model/".$c.".php")) {
+        require_once "model/".$c.".php";
+    }
+}
 
-$connect = new connect("localhost","tasklist",
+spl_autoload_register('autoload');
+
+$connect = new model("localhost","tasklist",
     "root", "");
 
 if (isset($_POST['send'])) {
