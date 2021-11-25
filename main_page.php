@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-require_once "ACore.php";
 
 if (isset($_SESSION['id'])|| isset($_SESSION['login'])){
     function autoload($c) {
@@ -14,7 +13,7 @@ if (isset($_SESSION['id'])|| isset($_SESSION['login'])){
     }
     spl_autoload_register('autoload');
 
-    if (isset($_GET['message'])) {}
+    if (isset($_GET['error'])) {}
     else {
         $main = new main;
         $main -> get_content();
