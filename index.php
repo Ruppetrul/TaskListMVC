@@ -11,20 +11,6 @@ function autoload($c) {
 
 spl_autoload_register('autoload');
 
-if (isset($_POST['send'])) {
-
-    if (isset($_POST['login']) && isset($_POST["password"])) {
-
-        $login = htmlspecialchars($_POST['login']);
-        $password = htmlspecialchars($_POST['password']);
-        session_start();
-        $_SESSION['login'] = $login;
-        $_SESSION['password'] = $password;
-
-        header("Location: index.php?controller=index_controller&method=login");
-    }
-}
-
 if (isset($_GET['controller'])) {
 
     $class = htmlspecialchars($_GET['controller']);

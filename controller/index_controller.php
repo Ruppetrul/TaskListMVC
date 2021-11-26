@@ -8,8 +8,8 @@ class index_controller extends ACore {
 
     function login() {
 
-        $login = $_SESSION['login'];
-        $password = $_SESSION['password'];
+        $login = $_POST['login'];
+        $password = $_POST['password'];
 
             $isUser = $this->userCheck($login);
 
