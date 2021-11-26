@@ -101,8 +101,7 @@ class model{
             return $statement -> execute();
 
         } catch (PDOException $ex) {
-            echo $ex -> getMessage();
-            die;
+             return $ex;
         }
     }
 

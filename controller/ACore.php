@@ -17,16 +17,16 @@ abstract class ACore {
         include "tpl/index_tpl.php";
     }
 
-    public function login($login, $password) {
+    public function login_request($login, $password) {
         return $this->m->loginUser($login, $password);
+    }
+
+    public function register_request($login, $password) {
+        $this->m->registerUser($login, $password);
     }
 
     public function userCheck($login) {
         return $this->m->userCheck($login);
-    }
-
-    public function register($login, $password) {
-        $this->m->registerUser($login, $password);
     }
 
     public function removeTask($id) {
@@ -38,7 +38,9 @@ abstract class ACore {
     }
 
     public function addTask($user_id,$description) {
-        $this->m->addTask($user_id, $description);
+
+        $result = $this->m->addTask($user_id, $description);
+
     }
 
     public function removeAllTasks($user_id) {
@@ -46,7 +48,7 @@ abstract class ACore {
     }
 
     public function alterTasksStatus($task_id) {
-        $this->m->alterTaskStatus($task_id);
+        $this->m->alterTasksStatus($task_id, true);
     }
 
     abstract function get_content();

@@ -20,31 +20,8 @@ if (isset($_POST['send'])) {
         $login = htmlspecialchars($_POST['login']);
         $password = htmlspecialchars($_POST['password']);
 
-        $isUser = $controller->userCheck($login);
+        $controller->login($login, $password);
 
-        if ($isUser) {
-
-            $isLogin = $controller->login($login, $password);
-
-            if (isset($isLogin['id'])) {
-                session_start();
-                $_SESSION['id'] = $isLogin['id'];
-                $_SESSION['login'] = $isLogin['login'];
-                header("Location: main.php");
-            } else {
-                $_POST['error'] = "Wrong login or password";
-            }
-        } else {
-            $controller->register($login, $password);
-            $isLogin = $controller->login($login, $password);
-
-            if (isset($isLogin['id'])) {
-                session_start();
-                $_SESSION['id'] = $isLogin['id'];
-                $_SESSION['login'] = $isLogin['login'];
-                header("Location: main.php");
-            } else {}
-        }
     }
 }
 
