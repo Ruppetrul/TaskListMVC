@@ -39,26 +39,28 @@ class model{
                 return $statement->execute();
 
             } catch (PDOException $ex) {
-                echo $ex->getMessage();
-                die;
-            }
+                echo $ex;
+        }
     }
 
     function userCheck($login) {
+        try {
         $sql = "SELECT * FROM users WHERE login = :login";
         $statement = $this->db->prepare($sql);
         $statement->bindParam(":login", $login);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if (isset($result['id'])) {
-            return true;
-        } else {
-            return false;
+            if (isset($result['id'])) return true;
+            else return false;
+
+        } catch (PDOException $ex) {
+            return $ex;
         }
     }
 
     function loginUser($login, $password) {
+        try {
         $sql = "SELECT * FROM users WHERE login = :login";
         $statement = $this->db->prepare($sql);
         $statement->bindParam(":login", $login);
@@ -70,23 +72,32 @@ class model{
         } else {
             return false;
         }
+        } catch (PDOException $ex) {
+            return $ex;
+        }
     }
 
     function getTasks($id) {
-        $sql = "SELECT * FROM tasks WHERE user_id = :id";
-        $statement = $this->db->prepare($sql);
-        $statement->bindParam(":id", $id);
-        $statement->execute();
 
-        $posts = $statement->fetchAll();
-        $arrayTask = array();
+        try {
+            $sql = "SELECT * FROM tasks WHERE user_id = :id";
+            $statement = $this->db->prepare($sql);
+            $statement->bindParam(":id", $id);
+            $statement->execute();
 
-        foreach ($posts as $row) {
-            $task = new Task($row);
-            $arrayTask[] = $task;
+            $posts = $statement->fetchAll();
+            $arrayTask = array();
+
+            foreach ($posts as $row) {
+                $task = new Task($row);
+                $arrayTask[] = $task;
+            }
+
+            return $arrayTask;
+            }
+            catch (PDOException $ex) {
+            return $ex;
         }
-
-        return $arrayTask;
     }
 
     function addTask($user_id, $description) {
@@ -106,39 +117,54 @@ class model{
     }
 
     function removeTask($task_id) {
+        try {
         $sql = "DELETE FROM tasks WHERE id = $task_id";
         $statement = $this->db->prepare($sql);
         return $statement -> execute();
+        } catch (PDOException $ex) {
+            return $ex;
+        }
     }
 
     function removeAllTasks($user_id) {
-        $sql = "DELETE FROM tasks WHERE user_id = $user_id";
-        $statement = $this->db->prepare($sql);
-        return $statement -> execute();
+        try {
+            $sql = "DELETE FROM tasks WHERE user_id = $user_id";
+            $statement = $this->db->prepare($sql);
+            return $statement->execute();
+        } catch (Exception $ex) {
+            return $ex;
+        }
     }
 
     function alterTaskStatus($task_id) {
-        $taskSql = "SELECT * FROM tasks WHERE id = $task_id";
-        $statement = $this->db->prepare($taskSql);
-        $statement -> execute();
-        $task = $statement -> fetch(PDO::FETCH_ASSOC);
+        try {
+            $taskSql = "SELECT * FROM tasks WHERE id = $task_id";
+            $statement = $this->db->prepare($taskSql);
+            $statement -> execute();
+            $task = $statement -> fetch(PDO::FETCH_ASSOC);
 
-        if ($task['status'] == 0) {
-            $new_status = 1;
-        } else {
-            $new_status = 0;
+            if ($task['status'] == 0) {
+                $new_status = 1;
+            } else {
+                $new_status = 0;
+            }
+            $sql = "UPDATE tasks SET status = $new_status WHERE id = $task_id";
+            $statement = $this->db->prepare($sql);
+            return $statement -> execute();
+        } catch (Exception $ex) {
+            return $ex;
         }
-
-        $sql = "UPDATE tasks SET status = $new_status WHERE id = $task_id";
-        $statement = $this->db->prepare($sql);
-        return $statement -> execute();
     }
 
     function alterTasksStatus($user_id, $status) {
-        $sql = "UPDATE tasks SET status = :status WHERE user_id = :user_id";
-        $statement = $this->db->prepare($sql);
-        $statement -> bindParam(":status", $status);
-        $statement -> bindParam(":user_id", $user_id);
-        return $statement -> execute();
+        try {
+            $sql = "UPDATE tasks SET status = :status WHERE user_id = :user_id";
+            $statement = $this->db->prepare($sql);
+            $statement -> bindParam(":status", $status);
+            $statement -> bindParam(":user_id", $user_id);
+            return $statement -> execute();
+        } catch (Exception $ex) {
+            return $ex;
+        }
     }
 }

@@ -22,7 +22,7 @@ if (isset($_SESSION['id'])|| isset($_SESSION['login'])){
         $controller -> alterTaskStatus(htmlspecialchars($_POST['change_status']));
         header("Refresh:0");
     } else if(isset($_POST['add_task'])){
-        $controller -> addTask(htmlspecialchars(null), htmlspecialchars($_POST['new_task']));
+        $controller -> addTask($_SESSION['id'], htmlspecialchars($_POST['new_task']));
         header("Refresh:0");
     } else if (isset($_POST['REMOVE_ALL'])) {
         $controller -> removeAllTasks(htmlspecialchars($_SESSION['id']));
@@ -37,8 +37,10 @@ if (isset($_SESSION['id'])|| isset($_SESSION['login'])){
 
     if (isset($_GET['error'])) {}
     else {
-        $controller -> get_content();
+        $controller -> getContent();
     }
+
+
 
 } else {
     session_destroy();

@@ -30,7 +30,7 @@ abstract class ACore {
     }
 
     public function removeTask($id) {
-        $this->m>$this->removeTask($id);
+        $this->m->removeTask($id);
     }
 
     public function alterTaskStatus($id) {
@@ -39,8 +39,7 @@ abstract class ACore {
 
     public function addTask($user_id,$description) {
 
-        $result = $this->m->addTask($user_id, $description);
-
+        return $this->m->addTask($user_id, $description);
     }
 
     public function removeAllTasks($user_id) {
@@ -51,5 +50,5 @@ abstract class ACore {
         $this->m->alterTasksStatus($task_id, true);
     }
 
-    abstract function get_content();
+    abstract function getContent();
 }

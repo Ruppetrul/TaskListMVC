@@ -1,7 +1,7 @@
 <?php
 
 class main_controller extends ACore {
-    function get_content()
+    function getContent()
     {
         $this->get_body($this->m);
     }

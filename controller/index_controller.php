@@ -1,13 +1,17 @@
 <?php
 
 class index_controller extends ACore {
-    function get_content()
+
+    function getContent()
     {
         $this->get_index_body();
     }
 
-    function login($login, $password) {
+    function getContentWithError() {
 
+    }
+
+    function login($login, $password) {
 
             $isUser = $this->userCheck($login);
 
@@ -21,7 +25,7 @@ class index_controller extends ACore {
                     $_SESSION['login'] = $isLogin['login'];
                     header("Location: main.php");
                 } else {
-                    $_POST['error'] = "Wrong login or password";
+
                 }
             } else {
                 $this->register_request($login, $password);
