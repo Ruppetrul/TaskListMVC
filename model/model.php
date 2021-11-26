@@ -77,12 +77,12 @@ class model{
         }
     }
 
-    function getTasks($id) {
+    function getTasks($user_id) {
 
         try {
-            $sql = "SELECT * FROM tasks WHERE user_id = :id";
+            $sql = "SELECT * FROM tasks WHERE user_id = :user_id";
             $statement = $this->db->prepare($sql);
-            $statement->bindParam(":id", $id);
+            $statement->bindParam(":user_id", $user_id);
             $statement->execute();
 
             $posts = $statement->fetchAll();
@@ -96,11 +96,14 @@ class model{
             return $arrayTask;
             }
             catch (PDOException $ex) {
+
             return $ex;
-        }
+
+            }
+
     }
 
-    function addTask($user_id, $description) {
+    function addTask($user_id,$description) {
         $sql = "INSERT INTO tasks (user_id, description) 
             VALUES (:user_id, :description)";
 

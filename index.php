@@ -11,7 +11,6 @@ function autoload($c) {
 
 spl_autoload_register('autoload');
 
-
 if (isset($_POST['send'])) {
 
     if (isset($_POST['login']) && isset($_POST["password"])) {
@@ -40,10 +39,10 @@ if (isset($_GET['controller'])) {
             $obj->$method();
 
         } else {
-            header("Location: index.php?controller=index_controller&method=getContentAndError&error=Method error");
+            header("Location: index.php?controller=index_controller&method=getContent&error=Method error");
         }
     } else {
-        header("Location: index.php?controller=index_controller&method=getContentAndError&error=Controller not found");
+        header("Location: index.php?controller=index_controller&method=getContent&error=Controller not found");
     }
 }
 else {

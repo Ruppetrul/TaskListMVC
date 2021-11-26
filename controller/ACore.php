@@ -8,8 +8,7 @@ abstract class ACore {
         $this->m= new model();
     }
 
-    public function get_body() {
-        $tasks = $this->m->getTasks($_SESSION['id']);
+    public function get_main_body($tasks) {
         include "tpl/main_tpl.php";
     }
 
@@ -40,9 +39,14 @@ abstract class ACore {
         $this->m->alterTaskStatus($id);
     }
 
-    public function addTask($user_id,$description) {
-
-        return $this->m->addTask($user_id, $description);
+    public function addTask() {
+        if (isset($_SESSION['user_id']) && isset($_SESSION['description'])) {
+            $user_id = ($_SESSION['user_id']);
+            $description = ($_SESSION['description']);
+            return $this->m->addTask($user_id, $description);
+        } else {
+            return null;
+        }
     }
 
     public function removeAllTasks($user_id) {

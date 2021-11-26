@@ -7,7 +7,6 @@ if (isset($_SESSION['login'])) {
     include "Views/user_panel.php";
     include "Views/create.form.html";
     include "Views/tools.form.html";
-    //$tasks = $m->getTasks($_SESSION['id']);
-    require 'Views/main.show.php';
+    include 'Views/main.show.php';
     echo '</div>';
 }

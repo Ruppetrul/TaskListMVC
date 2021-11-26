@@ -2,7 +2,7 @@
 
 session_start();
 
-if (isset($_SESSION['id'])|| isset($_SESSION['login'])){
+if (isset($_SESSION['user_id'])|| isset($_SESSION['login'])){
     function autoload($c) {
         if (file_exists("controller/".$c.".php")) {
             require_once "controller/".$c.".php";
@@ -13,33 +13,47 @@ if (isset($_SESSION['id'])|| isset($_SESSION['login'])){
     }
     spl_autoload_register('autoload');
 
-    $controller = new main_controller;
 
-    if(isset($_POST['delete'])){
-        $controller -> removeTask(htmlspecialchars($_POST['delete']));
-        header("Refresh:0");
+    if (isset($_POST['delete'])){
+        $_SESSION['delete'] = $_POST['delete'];
+        header("Location: main.php?controller=main_controller&method=removeTask_");
     } else if(isset($_POST['change_status'])) {
-        $controller -> alterTaskStatus(htmlspecialchars($_POST['change_status']));
-        header("Refresh:0");
+        $_SESSION['change_status'] = $_POST['change_status'];
+        header("Location: main.php?controller=main_controller&method=changeStatus");
     } else if(isset($_POST['add_task'])){
-        $controller -> addTask($_SESSION['id'], htmlspecialchars($_POST['new_task']));
-        header("Refresh:0");
+        $_SESSION['new_task'] = $_POST['new_task'];
+        header("Location: main.php?controller=main_controller&method=addTask_");
     } else if (isset($_POST['REMOVE_ALL'])) {
-        $controller -> removeAllTasks(htmlspecialchars($_SESSION['id']));
-        header("Refresh:0");
+        header("Location: main.php?controller=main_controller&method=removeAllTasks_");
     } else if(isset($_POST['READY_ALL'])) {
-        $controller -> alterTasksStatus(htmlspecialchars($_SESSION['id']), true);
-        header("Refresh:0");
+        header("Location: main.php?controller=main_controller&method=readyAll");
     } else if(isset($_POST['EXIT'])) {
         session_destroy();
         header("Location: index.php");
     }
 
-    if (isset($_GET['error'])) {}
-    else {
-        $controller -> getContent();
-    }
+    if (isset($_GET['controller'])) {
+        $class = htmlspecialchars($_GET['controller']);
+        $method = htmlspecialchars($_GET['method']);
+        if (isset($_GET))$_SESSION['getParams'] = $_GET;
 
+        if(class_exists($class)) {
+            $obj = new $class;
+
+            if (method_exists($obj, $method)) {
+
+                $obj->$method();
+
+            } else {
+                header("Location: main.php?controller=main_controller&method=getContentAndError&error=Method error");
+            }
+        } else {
+            header("Location: main.php?controller=main_controller&method=getContentAndError&error=Controller not found");
+        }
+    }
+    else {
+        header("Location: main.php?controller=main_controller&method=getContent");
+    }
 
 
 } else {
