@@ -16,7 +16,7 @@ abstract class ACore {
     public function get_index_body() {
         include "tpl/index_tpl.php";
     }
-    public function get_index_body_and_error($error) {
+    public function get_index_body_and_error() {
         include "tpl/index_tpl.php";
     }
 
