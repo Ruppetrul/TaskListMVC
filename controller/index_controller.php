@@ -7,8 +7,8 @@ class index_controller extends ACore {
         $this->get_index_body();
     }
 
-    function getContentWithError() {
-
+    function getContentAndError($error) {
+        $this->get_index_body_and_error($error);
     }
 
     function login($login, $password) {

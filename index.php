@@ -11,10 +11,6 @@ function autoload($c) {
 
 spl_autoload_register('autoload');
 
-session_start();
-
-var_dump($_POST);
-
 
 if (isset($_POST['send'])) {
 
@@ -22,6 +18,7 @@ if (isset($_POST['send'])) {
 
         $login = htmlspecialchars($_POST['login']);
         $password = htmlspecialchars($_POST['password']);
+        session_start();
         $_SESSION['login'] = $login;
         $_SESSION['password'] = $password;
 
@@ -31,10 +28,8 @@ if (isset($_POST['send'])) {
 
 if (isset($_GET['controller'])) {
 
-    $class = trim(strip_tags($_GET['controller']));
-    $method = trim(strip_tags($_GET['method']));
-
-    var_dump($method);
+    $class = htmlspecialchars($_GET['controller']);
+    $method = htmlspecialchars($_GET['method']);
 
     if(class_exists($class)) {
         $obj = new $class;
@@ -45,9 +40,24 @@ if (isset($_GET['controller'])) {
                     $obj->$method();
                     break;
                 }
+                case "getContentAndError": {
+                    if (isset($_GET['error'])) {
+                        $obj->$method($_GET['error']);
+                    }
+                    break;
+                }
                 case "login": {
+
+                    session_start();
+                    var_dump($_POST);
+                    var_dump($_GET);
+                    var_dump($_SESSION);
+
                     if (isset($_SESSION['login']) && isset($_SESSION['password'])) {
-                        $obj->$method($_SESSION['login'], $_SESSION['password']);
+                        if ($obj->$method($_SESSION['login'], $_SESSION['password'])) {
+
+                        }
+
                         break;
                     }
                     else {
@@ -56,11 +66,14 @@ if (isset($_GET['controller'])) {
                     }
                 }
             }
+        } else {
+            header("Location: index.php?controller=index_controller&method=getContentAndError&error=Method error");
         }
     } else {
-        echo 'Class not found';
+        header("Location: index.php?controller=index_controller&method=getContentAndError&error=Controller not found");
     }
 }
 else {
+    session_destroy();
     header("Location: index.php?controller=index_controller&method=getContent");
 }
