@@ -20,10 +20,8 @@ class Task_core extends Core {
         $this->m->alterTaskStatus($id);
     }
 
-    public function addTask() {
-        if (isset($_SESSION['user_id']) && isset($_SESSION['description'])) {
-            $user_id = ($_SESSION['user_id']);
-            $description = ($_SESSION['description']);
+    public function addTask($user_id,$description) {
+        if (isset($user_id) && isset($description)) {
             return $this->m->addTask($user_id, $description);
         } else {
             return null;

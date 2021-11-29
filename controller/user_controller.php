@@ -7,7 +7,7 @@ class user_controller extends User_core {
             $login = htmlspecialchars($_POST['login']);
             $password = htmlspecialchars($_POST['password']);
 
-            $isUser = $this->m->userCheck($login);
+            $isUser = $this->userCheck($login);
 
             if ($isUser) {
 
