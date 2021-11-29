@@ -1,6 +1,6 @@
 <?php
 
-class Task {
+class TaskObj {
     public $id;
     public $user_id;
     public $description;

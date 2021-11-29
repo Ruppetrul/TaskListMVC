@@ -4,6 +4,12 @@ function autoload($c) {
     if (file_exists("controller/".$c.".php")) {
         require_once "controller/".$c.".php";
     }
+    elseif (file_exists("task/".$c.".php")) {
+        require_once "task/".$c.".php";
+    }
+    elseif (file_exists("core/".$c.".php")) {
+        require_once "core/".$c.".php";
+    }
     elseif (file_exists("model/".$c.".php")) {
         require_once "model/".$c.".php";
     }
@@ -15,7 +21,6 @@ if (isset($_GET['controller'])) {
 
     $class = htmlspecialchars($_GET['controller']);
     $method = htmlspecialchars($_GET['method']);
-    $_SESSION['getParams'] = $_GET;
 
     if(class_exists($class)) {
         $obj = new $class;
@@ -25,13 +30,17 @@ if (isset($_GET['controller'])) {
             $obj->$method();
 
         } else {
-            header("Location: index.php?controller=index_controller&method=getContent&error=Method error");
+            header("Location: index.php?controller=user_controller&method=getContent&error=Method error");
         }
     } else {
-        header("Location: index.php?controller=index_controller&method=getContent&error=Controller not found");
+        header("Location: index.php?controller=user_controller&method=getContent&error=Controller not found");
     }
 }
 else {
-    session_destroy();
-    header("Location: index.php?controller=index_controller&method=getContent");
+    if (isset($_SESSION['user_id'])) {
+        header("Location: index.php?controller=task_controller&method=getContent");
+    } else {
+        session_destroy();
+        header("Location: index.php?controller=user_controller&method=getContent");
+    }
 }
