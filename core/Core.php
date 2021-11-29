@@ -9,6 +9,9 @@ abstract class Core {
     }
 
     public function get_login_body() {
+        if (isset($_GET['error'])) {
+            $error = $_GET['error'];
+        }
         include "tpl/index_tpl.php";
     }
 

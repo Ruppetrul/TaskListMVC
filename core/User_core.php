@@ -8,6 +8,8 @@ class User_core extends Core {
 
     function getContent()
     {
+
+
         $this->get_login_body();
     }
 

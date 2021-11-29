@@ -7,6 +7,6 @@ echo '
 </head>
 <body>
     <h style="position: fixed; left: 35%; top: 10%;" >      
-    '.$_SESSION['getParams']['error'].'</h>
+    '.$error.'</h>
 </body>
 </html>';
